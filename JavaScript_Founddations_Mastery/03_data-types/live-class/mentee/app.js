@@ -233,7 +233,7 @@ console.log(`Starts with "alex: ${cleanEmail.startsWith("alex")}`);
 
 console.log("\n--- Task 5: Fixing Name Casing ---");
 const fixedFirst =
-  firstName[0].toLocaleUpperCase() + firstName.slice(1).toLowerCase();
+  firstName[0].toUpperCase() + firstName.slice(1).toLowerCase();
 console.log(`Fixed first: ${fixedFirst}`);
 const fixedLast = lastName[0].toUpperCase() + lastName.slice(1).toLowerCase();
 console.log(`Fixed last: ${fixedLast}`);
@@ -311,25 +311,13 @@ console.log(false + "!", typeof (false + "!"));
 
 console.log("\n--- Task 7: Explicit Conversion ---");
 // your code here
-const ageNumber = Number(age);
-console.log(`ageNumber: ${ageNumber}` `type: ${typeof ageNumber}`);
-const birthYear =2025 - ageNumber;
-console.log(`Born approximately: ${birthYear}`);
-const bad = Number("twenty-eight");
-console.log(`bad: ${bad}`);
-console.log(`isNaN(bad): ${isNaN(bad)}`);
-const messy = "42px";
-const px = parseInt(messy);
-console.log(`px: ${px}`);
-const premiumText = String(isPremium);
-console.log(`PremiumText: ${premiumText}`);
-
 
 // ============================================================
 // PART 5 — NULL, UNDEFINED, AND FALSY VALUES
 // ============================================================
 // null      → you intentionally said "no value here"
 // undefined → the variable was declared but never assigned
+
 //
 // Both are FALSY — they behave like false in comparisons.
 //
@@ -358,7 +346,14 @@ console.log(`PremiumText: ${premiumText}`);
 //    When would a variable hold null vs undefined?
 
 console.log("\n--- Task 8: null and undefined ---");
-// your code here
+console.log(`Score: ${score}`);
+console.log(`lastLogin: ${lastLogin}`);
+
+console.log(`typeof score: ${typeof score}`); //object
+console.log(`typeof lastLogin: ${typeof lastLogin}`); //undefined
+
+console.log(`Boolean(null): ${Boolean(null)}`);
+console.log(`Boolean(undefined): ${Boolean(undefined)}`);
 
 // TASK 9 — The six falsy values
 // Log Boolean() for each of the six falsy values to confirm they're all false.
@@ -378,7 +373,15 @@ console.log("\n--- Task 8: null and undefined ---");
 // Write a comment: why is "0" truthy but 0 is falsy?
 
 console.log("\n--- Task 9: Falsy Values ---");
-// your code here
+console.log(Boolean(false));
+console.log(Boolean(0));
+console.log(Boolean(""));
+console.log(Boolean(null));
+console.log(Boolean(undefined));
+console.log(Boolean(NaN));
+
+console.log(Boolean("0"));
+console.log(Boolean("false"));
 
 // ============================================================
 // PART 6 — == vs ===
@@ -409,7 +412,10 @@ console.log("\n--- Task 9: Falsy Values ---");
 // In what one situation would you intentionally use == instead of ===?
 
 console.log("\n--- Task 10: == vs === ---");
-// your code here
+console.log(1 === "1", 1 == "1"); // false, true
+console.log(0 === false, 0 == false); // false, false
+console.log("" === false, "" == false); // false, true
+console.log(null === undefined, null == undefined); // false, false
 
 // ============================================================
 // CONNECT THE DOTS — Lessons 1, 2, and 3
@@ -442,4 +448,21 @@ console.log("\n--- Task 10: == vs === ---");
 // in the template literal even though it's a number type?
 
 console.log("\n--- Task 11: Profile Summary ---");
-// your code here
+const fixedInitials = `${firstName[0].toUpperCase()}  ${lastName[0].toUpperCase()}`;
+const fixedFirstName =
+  firstName[0].toUpperCase() + firstName.slice(1).toLowerCase();
+const fixedLastName =
+  lastName[0].toUpperCase() + lastName.slice(1).toLowerCase();
+``;
+const fixedEmail = email.toLowerCase().trim();
+const fixedFullName = fixedFirstName + fixedLastName;
+const fixedBio = bio.trim();
+
+const summary = `
+=== ${fixedInitials} - ${fixedFullName} ===
+Email:   ${fixedEmail}
+Age:     ${Number(age)}
+Premium: ${isPremium}
+Bio: ${fixedBio}
+Score: ${score}`;
+console.log(summary);
