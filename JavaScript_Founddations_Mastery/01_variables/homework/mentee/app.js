@@ -22,6 +22,11 @@
 //   isStudent   → true or false
 //
 // Log all four to the console.
+let fullName = "Eddie Munoz";
+let age = 27;
+let city = "El Paso";
+let isStudent = "No";
+console.log(fullName, age, city, isStudent);
 
 // ----------------------------------------------------------
 // TASK 2 — Update what can change
@@ -30,6 +35,9 @@
 // Reassign isStudent to the opposite value.
 // Log both after reassigning.
 //
+// let city = "Chicago";
+// let isStudent = "Yes"
+// console.log(city, isStudent)
 // Then try to reassign fullName.
 // Read the error, then comment that line out.
 
@@ -38,10 +46,11 @@
 // ----------------------------------------------------------
 // Declare a let called favoriteMovie — do NOT assign a value.
 // Log it. Write what you see as a comment.
-//
+// let favoriteMovie = "Arrival (2016)"
+
 // Now assign it a movie title.
 // Log it again.
-
+let favoriteMovie = "Arrival (2016)"
 // ----------------------------------------------------------
 // TASK 4 — Build a product listing
 // ----------------------------------------------------------
@@ -53,19 +62,29 @@
 //   productPrice → a price as a number
 //   inStock      → true
 //
+const productName = "iPhone";
+const productBrand = "Apple";
+const productPrice = 999.99;
+const inStock = true
+console.log(productBrand);
+console.log(productName);
+console.log(productPrice);
+console.log(inStock);
 // Log each variable on its own line.
 // Then log: productName + " by " + productBrand + " — $" + productPrice
-
+console.log(productName + " by " + productBrand + " - $" + productPrice);
 // ----------------------------------------------------------
 // TASK 5 — Stock status update
 // ----------------------------------------------------------
 // Reassign inStock to false.
 // Log: "In stock: " + inStock
-//
+const inStock = false;
+console.log("In stock: " + inStock);
 // Try to reassign productName.
 // Read the error and comment the line out.
 // Why did this fail but inStock worked?
 // Write your answer as a comment.
+// This failed because the inStock was already declared with const, which means its immutable.
 
 // ----------------------------------------------------------
 // TASK 6 — Fix the bad names
@@ -77,6 +96,11 @@
 //   my score      → fix it
 //   X             → rename to something descriptive, then declare it
 //   GaMeLeVeL     → fix the casing
+const secondPlayer = "Player2";
+const myScore = 300;
+const combos = 25;
+const gameLevel = 4;
+console.log(secondPlayer, myScore, combos, gameLevel);
 
 // ----------------------------------------------------------
 // TASK 7 — Two-step declaration
@@ -84,12 +108,16 @@
 // Declare a let called highScore — do NOT assign a value.
 // Log it.
 //
+let highScore
+console.log(highScore);
 // Assign highScore the value 500.
 // Log it.
-//
+let highScore = 500;
+console.log(highScore);
 // Reassign highScore to 750.
 // Log it.
-//
+let highScore = 750;
+console.log(highScore)
 // You should see three console lines: undefined → 500 → 750
 
 // ----------------------------------------------------------
@@ -99,10 +127,12 @@
 //   appName    → "TaskMaster"
 //   version    → 3
 //   authorName → your name
-//
+const appName = "TaskMaster";
+const version = 3;
+const authorName = "Eddie"
 // Log: appName + " v" + version + " — built by " + authorName
 // Expected format: "TaskMaster v3 — built by [your name]"
-
+console.log("Log: appName" + " v" + version + " — built by " + authorName)
 // ----------------------------------------------------------
 // ⭐ STRETCH GOAL
 // ----------------------------------------------------------
@@ -111,7 +141,12 @@
 // Declare a let called yearsRunning = currentYear - startYear.
 //
 // Log: appName + " has been running for " + yearsRunning + " years."
-//
+const startYear = 2020;
+const currentYear = 2025
+let yearsRunning = currentYear - startYear
+let currentYear = 2026
 // Then reassign currentYear... wait, can you? Why not?
 // Write the answer as a comment.
 // What keyword would you need if currentYear could change?
+//Cant not reassign currentYear because it is declared iwth const which is unmmutable.
+//To change this, declare it with a let instead, and then reassign it.

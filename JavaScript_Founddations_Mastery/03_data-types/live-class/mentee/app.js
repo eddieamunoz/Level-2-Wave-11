@@ -311,6 +311,19 @@ console.log(false + "!", typeof (false + "!"));
 
 console.log("\n--- Task 7: Explicit Conversion ---");
 // your code here
+const ageNumber = Number(age);
+console.log(`ageNumber: ${ageNumber}` `type: ${typeof ageNumber}`);
+const birthYear =2025 - ageNumber;
+console.log(`Born approximately: ${birthYear}`);
+const bad = Number("twenty-eight");
+console.log(`bad: ${bad}`);
+console.log(`isNaN(bad): ${isNaN(bad)}`);
+const messy = "42px";
+const px = parseInt(messy);
+console.log(`px: ${px}`);
+const premiumText = String(isPremium);
+console.log(`PremiumText: ${premiumText}`);
+
 
 // ============================================================
 // PART 5 — NULL, UNDEFINED, AND FALSY VALUES
