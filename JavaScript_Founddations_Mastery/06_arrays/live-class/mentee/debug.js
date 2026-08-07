@@ -5,7 +5,6 @@
 // what was wrong as a comment.
 // ============================================================
 
-
 // ----------------------------------------------------------
 // 🟢 DEBUG 1 — Easy
 // ----------------------------------------------------------
@@ -17,8 +16,7 @@ console.log(fruits[3]);
 
 // What's wrong ↓
 
-// Your fix ↓
-
+// Your fix ↓ because there is no index 3.
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -37,6 +35,7 @@ console.log(scores);
 // Hint: there IS a way to update the 95 to 100 without
 // reassigning the whole array. What is it?
 
+scores[2] = 100;
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -47,7 +46,7 @@ console.log(scores);
 
 const playlist = ["Jazz Vibes", "Lo-Fi Study", "Rock Classics", "Pop Hits"];
 
-for (let i = 1; i <= playlist.length; i++) {
+for (let i = 0; i < playlist.length; i++) {
   console.log("Track " + i + ": " + playlist[i]);
 }
 
@@ -56,3 +55,6 @@ for (let i = 1; i <= playlist.length; i++) {
 // Bug 2 ↓
 
 // Your fix ↓
+// Track 1: Jazz Vibes
+// Track 2: Lo-Fi Study
+// Track 3: Rock Classics

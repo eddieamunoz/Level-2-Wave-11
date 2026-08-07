@@ -281,6 +281,46 @@ console.log(playlist);
 //   Log: "Lowest:     " + lowScore
 //   Log: "Failed:     " + failCount + " student(s)"
 
+const temperatures = [22, 35, 18, 41, 29, 15, 37];
+const heatThreshold = 35;
+let hotDays = 0;
+
+for (let i = 0; i < temperatures.length; i++) {
+  if (temperatures[i] >= heatThreshold) {
+    hotDays++;
+    console.log("🌡️  Day " + (i + 1) + ": " + temperatures[i] + "°C — HOT");
+  } else {
+    console.log("✅ Day " + (i + 1) + ": " + temperatures[i] + "°C — Normal");
+  }
+}
+
+console.log("Hot days this week: " + hotDays + " / " + temperatures.length);
+
+const scores = [88, 72, 95, 61, 84, 79, 90];
+let totalAmount = 0;
+let highScore = 0;
+let lowScore = scores[0];
+const passing = 70;
+let failCount = 0;
+
+for (let i = 0; i < scores.length; i++) {
+  if (scores[i] > highScore) {
+    highScore = scores[i];
+  }
+  if (scores[i] < lowScore) {
+    lowScore = scores[i];
+  }
+  if (scores[i] < passing) {
+    failCount++;
+  }
+}
+
+const average = totalAmount / scores.length;
+console.log("Scores:     " + scores);
+console.log("Average:    " + average);
+console.log("Highest:    " + highScore);
+console.log("Lowest:     " + lowScore);
+console.log("Failed:     " + failCount + " student(s)");
 // ============================================================
 // 📝 for...of — FOOTNOTE
 // ============================================================
