@@ -113,11 +113,22 @@ const movies = [
 // Use forEach to log every movie title and its rating.
 // Format: "⭐ " + movie.rating + " — " + movie.title
 
+movies.forEach(function (movie) {
+  console.log("⭐ " + movie.rating + " — " + movie.title);
+});
+
 // TASK 2 — forEach + conditional (connect Lessons 4 & 8)
 // Use forEach to loop through movies.
 // IF movie.watched is true  → log: "✅ Watched:   " + movie.title
 // IF movie.watched is false → log: "⏳ Unwatched: " + movie.title
 
+movies.forEach(function (movie) {
+  if (movie.watched === true) {
+    console.log("✅ Watched:   " + movie.title);
+  } else {
+    console.log("⏳ Unwatched: " + movie.title);
+  }
+});
 // ----------------------------------------------------------
 // PART 2 — map (transform every element)
 // ----------------------------------------------------------
@@ -140,6 +151,11 @@ const movies = [
 // Use map to create a new array called titles
 // containing just the title of each movie (a string array).
 // Log titles.
+const titles = movies.map(function (movie) {
+  return movie.title;
+});
+
+console.log(titles);
 
 // TASK 4 — map to build display strings
 // Use map to create a new array called movieCards.
@@ -148,6 +164,16 @@ const movies = [
 //
 // Log movieCards.
 // Then use forEach on movieCards to log each one on its own line.
+
+const movieCards = movies.map(function (movie) {
+  return movie.title + " (" + movie.year + ") - ⭐" + movie.rating;
+});
+
+console.log(movieCards);
+
+movieCards.forEach(function (movieCard) {
+  console.log(movieCard);
+});
 
 // TASK 5 — map with calculation (connect Lessons 2 & 8)
 // The streaming service wants to display ratings out of 10
@@ -158,6 +184,16 @@ const movies = [
 //   { title: movie.title, percent: movie.rating / 10 * 100 }
 //
 // Log ratingCards.
+
+const ratingCards = movies.map(function (movie) {
+  return {
+    title: movie.title,
+    percent: Number(((movie.rating / 10) * 100).toFixed(2)),
+  };
+});
+
+console.log(ratingCards);
+console.log(typeof ratingCards[0].percent);
 
 // ----------------------------------------------------------
 // PART 3 — filter (keep only matching elements)
@@ -182,6 +218,15 @@ const movies = [
 // containing only movies with a rating >= 8.6.
 // Log: "High rated movies: " + highRated.length
 // Then forEach through highRated to log each title and rating.
+const highRated = movies.filter(function (movie) {
+  return movie.rating >= 8.6;
+});
+
+console.log("High rated movies: " + highRated.length);
+
+highRated.forEach(function (highRatedMovie) {
+  console.log(highRatedMovie.title + " " + highRatedMovie.rating);
+});
 
 // TASK 7 — filter + map chained (connect Lessons 6, 7, 8)
 // First use filter to get only unwatched movies.
@@ -194,6 +239,29 @@ const movies = [
 // This is method chaining — the output of filter feeds directly into map.
 // You can write it on one line:
 //   const watchlist = movies.filter(...).map(...);
+
+// const unwatchedMovies = movies.filter(function (unwatchedMovie) {
+//   return unwatchedMovie.watched === false;
+// });
+
+// const unwatched = unwatchedMovies.map(function (unwatched) {
+//   return { title: unwatched.title };
+// });
+
+const watchlist = movies
+  .filter(function (movie) {
+    return !movie.watched;
+  })
+  .map(function (movie) {
+    return movie.title;
+  });
+
+// const watchlist = unwatched;
+
+console.log("Your watchlist (" + watchlist.length + " movies):");
+watchlist.forEach(function (title) {
+  console.log(title);
+});
 
 // ----------------------------------------------------------
 // PART 4 — find, some, every
@@ -217,6 +285,17 @@ const movies = [
 // Then use find to search for a movie with id === 99.
 // Log what you get. Write a comment: what does find return when nothing matches?
 
+const foundMovie = movies.find(function (movie) {
+  return movie.id === 4;
+});
+
+console.log(foundMovie.title + " - " + foundMovie.genre);
+
+const findMovie = movies.find(function (movie) {
+  return movie.id === 99;
+});
+console.log(findMovie);
+
 // TASK 9 — some and every
 // Use some to check: is there at least one Action movie?
 // Log: "Has Action movie: " + result
@@ -231,6 +310,27 @@ const movies = [
 // Log: "All watched: " + result
 // Write a comment predicting each result BEFORE you run it.
 
+const result = movies.some(function (movie) {
+  return movie.genre === "Action";
+}); // TRUE
+
+console.log("Has Action movie: " + result);
+
+const result2 = movies.some(function (movie) {
+  return movie.rating > 9.0;
+}); //FALSE
+console.log("Has 9.0+ rating: " + result2);
+
+const result3 = movies.every(function (movie) {
+  return movie.rating > 8.0;
+});
+console.log("All above 8.0: " + result3);
+// TRUE
+
+const result4 = movies.every(function (movie) {
+  return movie.watched === true;
+}); //FALSE
+console.log("All watched: " + result4);
 // ----------------------------------------------------------
 // PART 5 — reduce (accumulate to a single value)
 // ----------------------------------------------------------
@@ -264,6 +364,24 @@ const movies = [
 // Use map to get just their titles.
 // Log: "Above average movies: " + aboveAverageTitles
 
+const totalRating = movies.reduce(function (acc, movie) {
+  return acc + movie.rating;
+}, 0);
+
+const averageRating = totalRating / movies.length;
+
+console.log("Total rating: " + totalRating);
+console.log("Average rating: " + averageRating);
+
+const aboveAvgTitles = movies
+  .filter(function (movie) {
+    return movie.rating > averageRating;
+  })
+  .map(function (movie) {
+    return movie.title;
+  });
+
+console.log("Above average movies: " + aboveAvgTitles);
 // ============================================================
 // 📝 .sort() — FOOTNOTE
 // ============================================================
