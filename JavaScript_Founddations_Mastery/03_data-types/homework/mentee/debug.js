@@ -17,9 +17,11 @@ const titled = cleanname[0].toUpperCase() + cleanname.slice(1);
 console.log(`Hello, ${titled}!`);
 
 // What's wrong ↓
+// "cleanname" needs to be camelCase to "cleanName"
 
 // Your fix ↓
-
+const titled = cleanName[0].toUpperCase() + cleanName.slice(1);
+console.log(`Hello, ${titled}!`);
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -36,8 +38,13 @@ const receipt   = `Total: $${itemPrice + lineTotal}`; // bug here
 console.log(receipt); // "Total: $79.99159.98" — wrong
 
 // What's wrong ↓
+// item price is being iclude in total, when the calculating for the total was already declared in line 35.
+// item price is also recognized as a string, in order to change it to a number you musy parseFloat() itemPrice.
 
 // Your fix ↓
+const lineTotal = parseFloat(itemPrice) * itemQty;
+const receipt   = `Total: $${lineTotal}`;
+
 
 
 // ----------------------------------------------------------
@@ -59,7 +66,15 @@ const label = `Discount code: ${rawCode} — valid: ${isValid}`;
 console.log(label); // shows messy whitespace in the label
 
 // Bug 1 ↓
-
+// rawCode is not cleaned up to validCode. Must make a variable that cleans rawCode and add it to isValid
+// in place of rawCode.
 // Bug 2 ↓
+// replace raw code with cleaned code that trims out the spaces.
 
 // Your fix for both ↓
+const cleanedCode = rawCode.trim().toUpperCase()
+const isValid = cleanedCode === validCode;
+console.log(`Code valid: ${isValid}`);
+
+const label = `Discount code: ${cleanedCode} — valid: ${isValid}`;
+console.log(label);

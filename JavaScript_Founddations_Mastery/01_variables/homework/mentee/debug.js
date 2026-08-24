@@ -17,9 +17,10 @@ storeName = "MegaShop";
 console.log(storeName);
 
 // What's wrong ↓
-
+// storeName was decaled again but its immutable because of the const, so it throws an error.
 // Your fix ↓
-
+let storeName = "TechMart";
+console.log(storeName);
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -32,8 +33,9 @@ let orderTotal = item1Price + Item2Price;
 console.log("Total: $" + orderTotal);
 
 // What's wrong ↓
-
+// syntax error on line 32, should be lowercase i on "Item2Price"
 // Your fix ↓
+let orderTotal = item1Price + item2Price;
 
 
 // ----------------------------------------------------------
@@ -51,5 +53,9 @@ console.log(productName + " — $" + productPrice);
 // Why is the current keyword considered bad practice?
 
 // What's wrong ↓
-
+// Using var, Best practice is to use either let or const 
+// depending on the type of variable.
 // Your fix ↓
+const productName = "Headphones";
+let productPrice = 49.99;
+console.log(productName + " — $" + productPrice);

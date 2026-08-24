@@ -13,12 +13,13 @@
 
 const billAmount = 80;
 const tipPercent = 15;
-const tipAmount  = billAmount % tipPercent;
+const tipAmount  = billAmount % (tipPercent/100);
 console.log("Tip: $" + tipAmount);
 
 // What's wrong ↓
-
+// the remainder operator does not give you the percentage for the tip.
 // Your fix ↓
+const tipAmount  = billAmount * (tipPercent/100);
 
 
 // ----------------------------------------------------------
@@ -34,8 +35,10 @@ countdown -= 1;
 console.log("Countdown: " + countdown);
 
 // What's wrong ↓
+// the countdown cant be declared with const becuase it will become immutable
 
 // Your fix ↓
+let countdown = 10;
 
 
 // ----------------------------------------------------------
@@ -51,9 +54,14 @@ var username2 = "Gamer99";
 console.log("Names match: " + (username1 == username2));
 
 // Logic bug ↓
+// the second issue is that we need to use strict equality "===" in the console.log().
 
 // Style issue 1 ↓
+// instead of var we need to use const so the value doesnt change.
 
 // Style issue 2 ↓
 
 // Your fix ↓
+const username1 = "gamer99";
+const username2 = "Gamer99";
+console.log("Names match: " + (username1.toLowerCase() === username2.toLowerCase()));
