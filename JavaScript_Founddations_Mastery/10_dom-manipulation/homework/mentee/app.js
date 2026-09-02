@@ -14,6 +14,8 @@
 // Open index.html in your browser to see the board.
 // ============================================================
 
+const { createElement } = require("react");
+
 // ============================================================
 // THE DATA — do not modify
 // ============================================================
@@ -92,9 +94,10 @@ const boardName = "Sprint 12 — Task Board";
 // Call renderHeader(tasks) at the bottom.
 
 function renderHeader(taskList) {
-  // your code here
+  document.getElementById("board-title").textContent = boardName;
+  document.getElementById("task-count").textContent = taskList.length + " tasks";
 }
-
+renderHeader(tasks);
 // ----------------------------------------------------------
 // TASK 2 — createTaskCard  (returns a DOM element)
 // ----------------------------------------------------------
@@ -126,7 +129,30 @@ function renderHeader(taskList) {
 // Task 3 will handle placing it in the right column.
 
 function createTaskCard(task) {
-  // your code here
+  const li = document.createElement("li")
+  li.classList.add("task-card") 
+  li.dataset.id = task.id;
+
+  const title = document.createElement("p");
+  title.classList.add("task-title")
+  title.textContent = task.title;
+
+  const meta = document.createElement("div");
+  meta.classList.add("task-meta");
+
+  const prioritySpan = document.createElement("span");
+  prioritySpan.textContent = task.priority.toUpperCase();
+  prioritySpan.classList.add("priority-" + task.priority);
+  const assigneeSpan = document.createElement("span");
+  assigneeSpan.textContent = "👤 " + task.assignee;
+
+  li.appendChild(title);
+  li.appendChild(meta);
+
+  if (task.status === "done") {
+    li.classList.add("completed");
+  }
+  return li;
 }
 
 // ----------------------------------------------------------
@@ -149,8 +175,22 @@ function createTaskCard(task) {
 // Call renderBoard(tasks) at the bottom.
 
 function renderBoard(taskList) {
-  // your code here
+  const todoList = document.getElementById("list-todo");
+  const inprogressList = document.getElementById("list-inprogress");
+  const doneList = document.getElementById("list-done");
+
+  taskList.forEach(task => {
+    const card = createTaskCard(task);
+    if(task.status === "todo") {
+      todoList.appendChild(card);
+    } else if ( task.status === "inprogress") {
+      inprogressList.appendChild(card)
+    } else if (task.status === "done") {
+      doneList.appendChild(card);
+    }
+  })
 }
+renderBoard(tasks);
 
 // ----------------------------------------------------------
 // TASK 4 — updateCounts
@@ -170,7 +210,7 @@ function renderBoard(taskList) {
 // Call updateCounts(tasks) at the bottom.
 
 function updateCounts(taskList) {
-  // your code here
+  taskList.filter()
 }
 
 // ----------------------------------------------------------
