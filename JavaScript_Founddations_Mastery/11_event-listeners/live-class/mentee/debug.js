@@ -33,6 +33,7 @@ document.getElementById("theme-btn")
 // skill never appears. What's missing?
 
 function handleSubmit(event) {
+  event.preventDefault();
   const skillInput = document.getElementById("skill-input");
   const skillName  = skillInput.value.trim();
 
