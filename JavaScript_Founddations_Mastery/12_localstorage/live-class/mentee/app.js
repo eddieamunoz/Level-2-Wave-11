@@ -185,10 +185,10 @@ function saveProfile() {
     status: document.getElementById("status-select").value,
     darkMode: document.body.classList.contains("dark"),
   };
-  localStorage.setItem("profileData", JSON.stringyfy(profileData));
+  localStorage.setItem("profileData", JSON.stringify(profileData));
   const storageStatus = document.getElementById("storage-status");
   storageStatus.textContent = "✅ Saved at " + new Date().toLocaleTimeString();
-  storageStatus.className("saved");
+  storageStatus.className = "saved";
 
   console.log("Profile saved to localStorage", profileData);
 }
@@ -223,6 +223,8 @@ function updateCharCount() {
   const len = document.getElementById("bio-input").value.length;
   document.getElementById("char-count").textContent = len + " / 200";
 }
+
+updateCharCount();
 
 // ----------------------------------------------------------
 // PART 4 — LOADING SAVED DATA
@@ -263,6 +265,7 @@ function updateCharCount() {
 //   9. Update storage status:
 //      Set #storage-status textContent: "✅ Profile loaded from storage"
 //      Add class "saved"
+
 //
 // First declare a helper function called applyDarkMode.
 // Parameter: isDark (boolean)
@@ -280,7 +283,15 @@ function updateCharCount() {
 //     case, resetting while in dark mode leaves the page dark.
 
 function applyDarkMode(isDark) {
-  // your code here
+  if (isDark) {
+    document.body.classList.add("dark");
+    const lightThemeBtn = document.getElementById("theme-btn");
+    lightThemeBtn.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("dark");
+    const darkThemeBtn = document.getElementById("theme-btn");
+    darkThemeBtn.textContent = "🌙 Dark Mode";
+  }
 }
 
 // Then declare a function called renderWithDefaults.
@@ -300,11 +311,52 @@ function applyDarkMode(isDark) {
 // status dropdown, dark mode class, theme button text.
 
 function renderWithDefaults() {
-  // your code here
+  document.getElementById("bio-input").value = defaultProfile.bio;
+
+  const skillsList = document.getElementById("skills-list");
+  skillsList.innerHTML = "";
+
+  defaultProfile.skills.forEach((skill) => {
+    addSkillToPage(skill);
+  });
+  document.getElementById("status-select").value = defaultProfile.status;
+
+  renderStatusBadge(defaultProfile.status);
+  applyDarkMode(defaultProfile.darkMode);
+  updateCharCount();
 }
 
 function loadProfile() {
-  // your code here
+  const saved = localStorage.getItem("profileData");
+
+  if (!saved) {
+    renderWithDefaults();
+    return;
+  } else {
+  }
+
+  const profileData = JSON.parse(saved);
+
+  document.getElementById("bio-input").value = profileData.bio;
+
+  const skillslist = document.getElementById("skills-list");
+  skillslist.innerHTML = "";
+  const skills = profileData.skills;
+  skills.forEach((skill) => {
+    addSkillToPage(skill);
+  });
+
+  let status = document.getElementById("status-select");
+  status = profileData.status;
+  renderStatusBadge(profileData.status);
+
+  applyDarkMode(profileData.darkMode);
+
+  updateCharCount();
+
+  const storageStatus = document.getElementById("storage-status");
+  storageStatus.textContent = "✅ Profile loaded from storage";
+  storageStatus.classList.add("saved");
 }
 
 // ----------------------------------------------------------
@@ -336,7 +388,12 @@ function loadProfile() {
 //    to "Reset to Defaults" so the label matches the behaviour.
 
 function resetProfile() {
-  // your code here
+  localStorage.removeItem("profileData");
+  renderWithDefaults();
+  const storageStatus = document.getElementById("storage-status");
+  storageStatus.textContent = "↩️ Reset to defaults";
+  storageStatus.className = "cleared";
+  console.log("Saved data removed — page reset to defaults");
 }
 
 document.getElementById("clear-btn").addEventListener("click", resetProfile);
@@ -355,14 +412,25 @@ document.getElementById("clear-btn").addEventListener("click", resetProfile);
 // (Same as Event Listeners lesson — copy your logic here)
 
 function addSkillToPage(skillName) {
-  // your code here
+  const skillsList = document.getElementById("skills-list");
+  const newLi = document.createElement("li");
+  newLi.textContent = skillName;
+  newLi.addEventListener("click", function () {
+    newLi.remove();
+    updateSkillCount();
+    saveProfile();
+  });
+  skillsList.append(newLi);
+  updateSkillCount();
 }
 
 // Declare a function called updateSkillCount.
 // Updates #skill-count with the current number of skills.
 
 function updateSkillCount() {
-  // your code here
+  const skillList = document.getElementById("skills-list");
+  document.getElementById("skill-count").textContent =
+    skillList.children.length;
 }
 
 // Declare a function called renderStatusBadge.
@@ -371,7 +439,19 @@ function updateSkillCount() {
 // (Same as Event Listeners lesson)
 
 function renderStatusBadge(status) {
-  // your code here
+  const badgeEl = document.getElementById("status-badge");
+  badgeEl.classList.remove("active", "away", "offline");
+
+  if (status === "active") {
+    badgeEl.textContent = "🟢 Active";
+    badgeEl.classList.add("active");
+  } else if (status === "away") {
+    badgeEl.textContent = "🟡 Away";
+    badgeEl.classList.add("away");
+  } else {
+    badgeEl.textContent = "🔴 Offline";
+    badgeEl.classList.add("offline");
+  }
 }
 
 // ----------------------------------------------------------
@@ -400,15 +480,27 @@ function renderStatusBadge(status) {
 //    calls renderStatusBadge.
 
 function handleThemeToggle() {
-  // your code here
+  document.body.classList.toggle("dark");
+  const darkModeOn = document.body.classList.contains("dark");
+  const themeBtn = document.getElementById("theme-btn");
+  themeBtn.textContent = darkModeOn ? "☀️ Light Mode" : "🌙 Dark Mode";
+  saveProfile();
 }
 
 function handleSkillSubmit(event) {
-  // your code here
+  event.preventDefault();
+  const skillInput = document.getElementById("skill-input");
+  const skillName = skillInput.value.trim();
+  if (skillName) {
+    addSkillToPage(skillName);
+    saveProfile();
+    skillInput.value = "";
+  }
 }
 
 function handleStatusChange(event) {
-  // your code here
+  renderStatusBadge(event.target.value);
+  saveProfile();
 }
 
 document
@@ -443,9 +535,12 @@ document
 document
   .getElementById("bio-input")
   .addEventListener("input", function (event) {
-    // your code here
+    updateCharCount();
+    saveProfile();
   });
 
+//auto-save is convenient because changes save immediately.
+//but it writes to localStorage more often than a manual Save button.
 // ============================================================
 // START THE PAGE
 // ============================================================
