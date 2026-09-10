@@ -14,7 +14,7 @@
 // Open index.html in your browser to see the board.
 // ============================================================
 
-const { createElement } = require("react");
+
 
 // ============================================================
 // THE DATA — do not modify
@@ -97,7 +97,7 @@ function renderHeader(taskList) {
   document.getElementById("board-title").textContent = boardName;
   document.getElementById("task-count").textContent = taskList.length + " tasks";
 }
-renderHeader(tasks);
+
 // ----------------------------------------------------------
 // TASK 2 — createTaskCard  (returns a DOM element)
 // ----------------------------------------------------------
@@ -146,6 +146,8 @@ function createTaskCard(task) {
   const assigneeSpan = document.createElement("span");
   assigneeSpan.textContent = "👤 " + task.assignee;
 
+  meta.appendChild(prioritySpan);
+  meta.appendChild(assigneeSpan);
   li.appendChild(title);
   li.appendChild(meta);
 
@@ -190,7 +192,7 @@ function renderBoard(taskList) {
     }
   })
 }
-renderBoard(tasks);
+
 
 // ----------------------------------------------------------
 // TASK 4 — updateCounts
@@ -210,7 +212,15 @@ renderBoard(tasks);
 // Call updateCounts(tasks) at the bottom.
 
 function updateCounts(taskList) {
-  taskList.filter()
+  const completedTasks = taskList.filter(completed => completed.status === "done");
+  const pendingTasks = taskList.filter(pending => pending.status !== "done");
+
+  document.getElementById("completed-count")
+    .textContent = "✅ " + completedTasks.length + " done";
+
+  document.getElementById("pending-count")
+    .textContent = "⏳ " + pendingTasks.length + " pending";
+
 }
 
 // ----------------------------------------------------------
@@ -231,7 +241,14 @@ function updateCounts(taskList) {
 // For now just build and attach the buttons so they appear.
 
 function addRemoveButtons() {
-  // your code here
+  const allElements = document.querySelectorAll(".task-card")
+
+  allElements.forEach((card) => {
+    const btn = document.createElement("button");
+    btn.classList.add("remove-btn");
+    btn.textContent = "✕";
+    card.appendChild(btn);
+  });
 }
 
 // ----------------------------------------------------------
@@ -249,7 +266,10 @@ function addRemoveButtons() {
 // This makes high-priority labels appear bolder.
 
 function highlightHighPriority() {
-  // your code here
+  const highPriority = document.querySelectorAll(".priority-high");
+  highPriority.forEach((element) => {
+    element.style.fontWeight = "800";
+  });
 }
 
 // ----------------------------------------------------------
@@ -273,9 +293,21 @@ function highlightHighPriority() {
 // Watch a new card appear in the To Do column with a ✕ button.
 
 function addNewTask(title, assignee, priority = "medium", status = "todo") {
-  // your code here
+  const newTaskObject = {id: Date.now(), title, assignee, priority, status};
+  tasks.push(newTaskObject);
+  const card = createTaskCard(newTaskObject);
+   if (status === "todo") {
+    document.getElementById("list-todo").appendChild(card);
+  } else if (status === "inprogress") {
+    document.getElementById("list-inprogress").appendChild(card);
+  } else if (status === "done") {
+    document.getElementById("list-done").appendChild(card);
+  }
+  updateCounts(tasks);
+  addRemoveButtons();
+  highlightHighPriority()
 }
-
+addNewTask("Write Unit Tests", "Carlos", "high")
 // ----------------------------------------------------------
 // TASK 8 — Connect the dots: renderAll
 // ----------------------------------------------------------
@@ -293,8 +325,13 @@ function addNewTask(title, assignee, priority = "medium", status = "todo") {
 // each function individually.
 
 function renderAll() {
-  // your code here
+  renderHeader(tasks);
+  renderBoard(tasks);
+  updateCounts(tasks);
+  addRemoveButtons();
+  highlightHighPriority();
 }
+renderAll();
 
 // ----------------------------------------------------------
 // ⭐ STRETCH GOAL — markComplete
@@ -319,3 +356,17 @@ function renderAll() {
 // ============================================================
 // CALL YOUR FUNCTIONS HERE
 // ============================================================
+function markComplete(taskId) {
+  const locateTask = tasks.find(task => task.id === taskId);
+  const card = document.querySelector("[data-id='" + taskId + "']");
+  if (locateTask) {
+    locateTask.status = "done";
+  }
+  if (card) {
+    card.classList.add("completed");
+    document.getElementById("list-done").appendChild(card)
+  }
+  updateCounts(tasks);
+}
+
+markComplete(1);

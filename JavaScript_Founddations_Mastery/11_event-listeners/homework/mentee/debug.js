@@ -18,13 +18,14 @@ function logTitle() {
   console.log("Title: " + title);
 }
 
-document.getElementById("add-task-btn")
-  .addEventListener("click", logTitle());
+// document.getElementById("add-task-btn")
+//   .addEventListener("click", logTitle());
 
 // What's wrong ↓
-
+// Calling the function in the event listner immediatley with ().
 // Your fix ↓
-
+document.getElementById("add-task-btn")
+  .addEventListener("click", logTitle);
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -33,12 +34,33 @@ document.getElementById("add-task-btn")
 // Clicking "High" hides all tasks instead of showing only high ones.
 // What's wrong with the condition?
 
+// function handleFilter(event) {
+//   const filter  = event.target.dataset.filter;
+//   const allCards = document.querySelectorAll(".task-card");
+
+//   allCards.forEach(function(card) {
+//     if (card.dataset.priority !== filter) {
+//       card.classList.remove("hidden");
+//     } else {
+//       card.classList.add("hidden");
+//     }
+//   });
+// }
+
+// document.querySelector(".header-right")
+//   .addEventListener("click", handleFilter);
+
+// What's wrong ↓
+// on the first if, card.dataset.priorty should be === filter,
+// since its doing the exact opposite and hiding high priority things.
+// Your fix ↓
+
 function handleFilter(event) {
   const filter  = event.target.dataset.filter;
   const allCards = document.querySelectorAll(".task-card");
 
   allCards.forEach(function(card) {
-    if (card.dataset.priority !== filter) {
+    if (card.dataset.priority === filter) {
       card.classList.remove("hidden");
     } else {
       card.classList.add("hidden");
@@ -48,11 +70,6 @@ function handleFilter(event) {
 
 document.querySelector(".header-right")
   .addEventListener("click", handleFilter);
-
-// What's wrong ↓
-
-// Your fix ↓
-
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard

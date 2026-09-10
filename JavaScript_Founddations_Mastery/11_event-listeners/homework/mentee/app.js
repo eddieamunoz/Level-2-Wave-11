@@ -93,7 +93,45 @@ const tasks = [
 //   7. Return the <li>
 
 function createTaskCard(task) {
-  // your code here
+  const li = document.createElement("li");
+  li.classList.add("task-card");
+  li.dataset.id = task.id;
+  li.dataset.priority = task.priority;
+
+  const taskTitle = document.createElement("p");
+  taskTitle.classList.add("task-title");
+  taskTitle.textContent = task.title;
+
+  const div = document.createElement("div")
+  div.classList.add("task-meta");
+
+  const prioritySpan = document.createElement("span");
+  prioritySpan.classList.add("priority-" + task.priority);
+  prioritySpan.textContent = task.priority.toUpperCase();
+
+  const assigneeSpan = document.createElement("span")
+  assigneeSpan.textContent = "👤 " + task.assignee
+
+  const cardActions = document.createElement("div");
+  cardActions.classList.add("card-actions");
+
+  const completeBtn = document.createElement("button");
+  completeBtn.classList.add("complete-btn");            
+  completeBtn.textContent = "✅ Complete";               
+  cardActions.appendChild(completeBtn);   
+  
+  const removeBtn = document.createElement("button");
+  removeBtn.classList.add("remove-btn");
+  removeBtn.textContent = "🗑️ Remove";
+  cardActions.appendChild(removeBtn);
+
+  if (task.status === "done") {
+    li.classList.add("completed");
+    li.appendChild(title);
+    li.appendChild(meta)
+    li.appendChild(actions)
+  }
+  return li
 }
 
 // ----------------------------------------------------------
