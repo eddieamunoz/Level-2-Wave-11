@@ -381,6 +381,19 @@ function buildQueryString(paramsObject) {
   return "?" + buildString.join("&");
 }
 
+
+// {
+// userId: 1,
+// _limit: 5
+//}
+
+//["userId, "_limit"]
+
+//["userId=1", "_limit=5"]
+
+// userId=1&_limit=5
+
+
 // Test it:
 console.log(buildQueryString({ userId: 1, _limit: 5 }));
 // Expected: "?userId=1&_limit=5"
