@@ -91,7 +91,7 @@ document.querySelector(".board")
   .addEventListener("click", handleBoardClick);
 
 // Bug 1 ↓
-
+// the if statment should remove taskId not card.
 // Bug 2 ↓
-
+//  no check after .boared
 // Your fix ↓

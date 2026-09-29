@@ -18,14 +18,16 @@ const tasksToSave = [
 
 localStorage.setItem("tasks", JSON.stringify(tasksToSave));
 
-const tasks = localStorage.getItem("tasks");
-console.log(tasks.length);   // logs a large number — wrong
-console.log(tasks[0]);       // logs "{" — wrong, expected an object
+// const tasks = localStorage.getItem("tasks");
+// console.log(tasks.length);   // logs a large number — wrong
+// console.log(tasks[0]);       // logs "{" — wrong, expected an object
 
 // What's wrong ↓
-
+// Need to parse back tasks.
 // Your fix ↓
-
+const tasks = JSON.parse(localStorage.getItem("tasks"));
+console.log(tasks.length);
+console.log(tasks[0]);
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -54,9 +56,9 @@ function saveBoardState(taskList) {
 // Think about what could prevent the class from taking visual effect.
 
 // What's wrong ↓
-
+// The setTimout is removing the "visible" class due to the DOM work taking to long before the timer.
 // Your fix — conceptual explanation is enough here ↓
-
+// reorder the function enitrly so that the heavy DOM work is first, then set the timer.
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -70,8 +72,12 @@ let taskList = [];
 
 function loadAndRender() {
   const raw = localStorage.getItem("boardTasks");
+  if (raw === null) {
+    taskList = [];
+    return;
+  }
   taskList  = JSON.parse(raw);
-
+  document.getElementById("list-todo").innerHTML = "";
   taskList.forEach(function(task) {
     const li = document.createElement("li");
     li.textContent = task.title;
@@ -89,7 +95,8 @@ loadAndRender();
 loadAndRender(); // called again — what happens?
 
 // Bug 1 (crash on first load) ↓
-
+// Function is missing a null check when parsing.
 // Bug 2 (duplicates) ↓
-
+// Generating new li, but not clearing the previous ones, thus resulting in duplicates.
 // Your fix ↓
+// lines 75-80

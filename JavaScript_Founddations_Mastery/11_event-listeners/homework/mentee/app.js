@@ -127,11 +127,14 @@ function createTaskCard(task) {
 
   if (task.status === "done") {
     li.classList.add("completed");
-    li.appendChild(title);
-    li.appendChild(meta)
-    li.appendChild(actions)
+
   }
-  return li
+
+    li.appendChild(title);
+    li.appendChild(meta);
+    li.appendChild(actions);
+
+  return li;
 }
 
 // ----------------------------------------------------------
@@ -168,11 +171,46 @@ function createTaskCard(task) {
 //   #count-done       → done.length          (just the number — no label)
 
 function updateCounts(taskList) {
-  // your code here
+  const done = taskList.filter(task => task.status === "done");
+  const pending = taskList.filter(task => task.status !== "done");
+  const todo = taskList.filter(task => task.status === "todo");
+  const inprogress = taskList.filter(task => task.status === "inprogress");
+
+  document.getElementById("task-count")
+    .textContent = taskList.length + " tasks";
+
+  document.getElementById("completed-count")
+    .textContent = "✅ " + done.length + " done";
+
+  document.getElementById("pending-count")
+    .textContent = "⏳ " + pending.length + " pending";
+
+  document.getElementById("count-todo")
+    .textContent = todo.length; 
+
+  document.getElementById("count-inprogress")
+    .textContent = inprogress.length;
+
+  document.getElementById("count-done")
+    .textContent = done.length;
 }
 
 function renderBoard(taskList) {
-  // your code here
+  document.getElementById("list-todo").innerHTML = "";
+  document.getElementById("list-inprogress").innerHTML = "";
+  document.getElementById("list-done").innerHTML = "";
+
+  taskList.forEach(task => {
+    const card = createTaskCard(task);
+    if(task.status === "todo") {
+        document.getElementById("list-todo").appendChild(card);
+      } else if (task.status === "inprogress") {
+        document.getElementById("list-inprogress").appendChild(card);
+      } else if (task.status === "done") {
+        document.getElementById("list-done").appendChild(card);
+      }
+  });
+  updateCounts(taskList);
 }
 
 // ----------------------------------------------------------
@@ -199,11 +237,26 @@ function renderBoard(taskList) {
 //     .addEventListener("click", handleAddTask);
 
 function handleAddTask() {
-  // your code here
+  const title = document.getElementById("task-title-input").value.trim();
+  const assignee = document.getElementById("task-assignee-input").value.trim();
+  const priority = document.getElementById("task-priority-input").value;
+  const status = document.getElementById("task-status-input").value;
+
+  if (title === "") {
+    console.log("Title is required");
+    return;
+  }
+  
+  const newTask = { id: Date.now(), title, assignee: assignee || "Unassigned", priority, status };
+
+  tasks.push(newTask);
+  renderBoard(tasks);
+  document.getElementById("task-assignee-input").value = "";
+  document.getElementById("task-title-input").value = "";
 }
-
 // wire up here
-
+document.getElementById("add-task-btn")
+  .addEventListener("click", handleAddTask);
 // ----------------------------------------------------------
 // TASK 4 — handleBoardClick (event delegation for complete + remove)
 // ----------------------------------------------------------
@@ -240,13 +293,37 @@ function handleAddTask() {
 //     .addEventListener("click", handleBoardClick);
 //
 // Write a comment: why use .closest() instead of event.target directly?
+// event.target would be the exact thing you clicked, using closest() grabs the li,
+// the nearest li with the attributes its looking for.
 
 function handleBoardClick(event) {
-  // your code here
+  const clickedElement = event.target;
+  const card = clickedElement.closest(".task-card");
+  if (!card) {
+    return;
+  }
+
+  const getTaskId = parseInt(card.dataset.id);
+  const task = tasks.find(t => t.id === getTaskId);
+
+  if (clickedElement.classList.contains("complete-btn")) {
+    task.status = "done";
+    card.classList.add("completed");
+    document.getElementById("list-done").appendChild(card);
+    updateCounts(tasks)
+  };
+
+  if (clickedElement.classList.contains("remove-btn")) {
+    const index = tasks.findIndex(t => t.id === getTaskId);
+    tasks.splice(index , 1);
+    card.remove();
+    updateCounts(tasks);
+  }
+  
 }
 
 // wire up here
-
+  document.querySelector(".board").addEventListener("click", handleBoardClick);
 // ----------------------------------------------------------
 // TASK 5 — handleFilterClick (filter buttons)
 // ----------------------------------------------------------
@@ -278,11 +355,30 @@ function handleBoardClick(event) {
 // individual listeners on each button?
 
 function handleFilterClick(event) {
-  // your code here
+ const filterValue = event.target.dataset.filter
+    if (!filterValue) {
+      return console.log("Clicked something that's not a button")
+    }
+
+    document.querySelectorAll(".filter-btn").forEach((active) => {
+      active.classList.remove("active");
+    });
+
+    event.target.classList.add("active");
+
+    document.querySelectorAll(".task-card").forEach((card) => {
+      if (filterValue === "all") {
+        card.classList.remove("hidden");
+      }  else if (card.dataset.priority === filterValue) {
+        card.classList.remove("hidden");
+      } else {
+        card.classList.add("hidden")
+      }
+    });
 }
 
 // wire up here
-
+document.querySelector(".header-right").addEventListener("click", handleFilterClick);
 // ----------------------------------------------------------
 // TASK 6 — handleKeyDown (keyboard shortcuts)
 // ----------------------------------------------------------
@@ -301,11 +397,21 @@ function handleFilterClick(event) {
 // Wire it up to document.
 
 function handleKeyDown(event) {
-  // your code here
+  if (event.key === "Escape") {
+    document.getElementById("task-title-input")
+      .value = "";
+    document.getElementById("task-assignee-input")
+      .value = "";
+    console.log("Inputs Cleared");
+  }
+
+  if (event.key === "Enter" && event.target.id === "task-title-input") {
+    handleAddTask();
+  }
 }
 
 // wire up here
-
+document.addEventListener("keydown", handleKeyDown);
 // ----------------------------------------------------------
 // TASK 7 — Connect the dots: init
 // ----------------------------------------------------------
@@ -315,7 +421,7 @@ function handleKeyDown(event) {
 // Call init() at the bottom.
 
 function init() {
-  // your code here
+  renderBoard(tasks);
 }
 
 // ----------------------------------------------------------
@@ -341,12 +447,26 @@ function init() {
 //     .addEventListener("input", handleSearch);
 //
 // Write a comment: why use "input" and not "change" for live search?
-
+// for live search the user is going to be typing as they search, which is why we choose input.
+// change would be more of a hassle and be more laggy.
 // ============================================================
 // WIRE UP ALL LISTENERS (above init)
 // ============================================================
-
+document.getElementById("search-input").addEventListener("input", handleSearch);
 // ============================================================
 // START
+function handleSearch(event) {
+  const searchQuery = event.target.value.toLowerCase().trim();
+  const cards = document.querySelectorAll(".task-card")
+
+  cards.forEach((card) => {
+    const title = card.querySelector(".task-title").textContent.toLowerCase();
+    if (title.includes(searchQuery)) {
+      card.classList.remove("hidden");
+    } else {
+      card.classList.add("hidden");
+    }
+  });
+}
 // ============================================================
 init();
