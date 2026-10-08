@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>My Spotify Profile</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>Your Dashboard</h1>
+        <nav>
+            <button class="nav-btn" data-section="profile">Profile</button>
+            <button class="nav-btn" data-section="tracks">Tracks</button>
+            <button class="nav-btn" data-section="artists">Artist</button>
+            <button class="nav-btn" data-section="contact">Contact</button>
+        </nav>
+        <p id="status">View your stats here!</p>
+        
+        <section id="profile" class="page-section">
+            <h2>Hey there <span id="displayName"></span>!</h2>
+            <div id="avatar"></div>
+        <ul>
+            <li>User ID: <span id="userId"></span></li>
+            <li>Email: <span id="email"></span></li>
+            <li>Profile Image: <span id="imgUrl"></span></li>
+        </ul>
+        </section>
+        <section id="tracks" class="page-section hidden">
+            <h2>Top Tracks</h2>
+            <ol id="tracks-list"></ol>
+        </section>
+
+        <section id="artists" class="page-section hidden">
+            <h2>Top Artists</h2>
+            <ol id="artists-list"></ol>
+        </section>
+
+        <section id="contact" class="page-section hidden">
+        <h2>Contact to Submit Feedback</h2>
+        <form id="contact-form" novalidate>
+            <label for="contact-name">Name</label>
+            <input type="text" id="contact-name">
+
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email">
+
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" rows="4"></textarea>
+
+            <button type="submit">Send</button>
+            <p id="contact-feedback"></p>
+        </form>
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="app.js" defer></script>
+    </body>
+</html>
