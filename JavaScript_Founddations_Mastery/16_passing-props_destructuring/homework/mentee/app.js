@@ -31,8 +31,39 @@ const team = [
 //   5. <button> — textContent: "📧 Contact"
 //      On click: call onContact(email)
 
-function MemberCard(/* your destructured parameter here */) {
-  // your code here
+function MemberCard({ member: { name, role, dept, email, photo, bio }, onContact }) {
+  const card = document.createElement("div");
+  card.className = "member-card";
+
+  const img = document.createElement("img");
+  img.className = "member-photo";
+  img.src = photo;
+  img.alt = name;
+
+  const heading = document.createElement("h3");
+  heading.textContent = name;
+
+  const roleText = document.createElement("p");
+  roleText.className = "member-role";
+  roleText.textContent = role + " · " + dept;
+
+  const bioText = document.createElement("p");
+  bioText.className = "member-bio";
+  bioText.textContent = bio;
+
+  const button = document.createElement("button");
+  button.textContent = "📧 Contact";
+  button.addEventListener("click", function () {
+    onContact(email);
+  });
+
+  card.appendChild(img);
+  card.appendChild(heading);
+  card.appendChild(roleText);
+  card.appendChild(bioText);
+  card.appendChild(button);
+
+  return card;
 }
 
 
@@ -61,15 +92,24 @@ function MemberCard(/* your destructured parameter here */) {
 //   );
 
 function TeamList(props) {
-  // your code here
+  const container = document.createElement("div");
+
+  props.members.forEach(function (member) {
+    const card = MemberCard({ member: member, onContact: props.onContact });
+    container.appendChild(card);
+  });
+
+  return container;
 }
 
 function handleContact(email) {
-  // your code here
+  console.log("Contacting: " + email);
 }
 
 // mount it here
-
+document.getElementById("app").appendChild(
+  TeamList({ members: team, onContact: handleContact })
+);
 
 // TASK 3 — two more destructuring reps
 //
@@ -87,7 +127,12 @@ function handleContact(email) {
 const partialMember = { name: "Maya Chen", role: "Intern" };
 
 // your code here
+const { name: firstMemberName, ...restOfFirstMember } = team[0];
+console.log(firstMemberName);
+console.log(restOfFirstMember);
 
+const { dept = "Unassigned" } = partialMember;
+console.log(dept);
 
 // ============================================================
 // 📝 WHAT THIS HOMEWORK DRILLED

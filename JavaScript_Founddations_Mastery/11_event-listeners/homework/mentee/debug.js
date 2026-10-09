@@ -78,20 +78,31 @@ document.querySelector(".header-right")
 // its Remove button is clicked. Nothing happens when clicked.
 // There are TWO bugs.
 
-function handleBoardClick(event) {
-  const card   = event.target.closest(".task-card");
-  const taskId = card.dataset.id;
+// function handleBoardClick(event) {
+//   const card   = event.target.closest(".task-card");
+//   const taskId = card.dataset.id;
 
-  if (event.target.classList.contains("remove-btn")) {
+//   if (event.target.classList.contains("remove-btn")) {
+//     card.remove();
+//   }
+// }
+
+// document.querySelector(".board")
+//   .addEventListener("click", handleBoardClick);
+
+// Bug 1 ↓
+// There is no check to see if card exists first.
+// Bug 2 ↓
+// need to use closest since the event.target could be something that is inside the button.
+// Your fix ↓
+function handleBoardClick(event) {
+  const card = event.target.closest(".task-card");
+  const taskId = card.dataset.id;
+  if (!card) return;
+
+  if (event.target.closest(".remove-btn")) {
     card.remove();
   }
 }
 
 document.querySelector(".board")
-  .addEventListener("click", handleBoardClick);
-
-// Bug 1 ↓
-// the if statment should remove taskId not card.
-// Bug 2 ↓
-//  no check after .boared
-// Your fix ↓

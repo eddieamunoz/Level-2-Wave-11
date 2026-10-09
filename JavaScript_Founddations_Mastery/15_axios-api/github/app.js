@@ -199,7 +199,7 @@ async function checkProfile() {
     document.getElementById("portfolio-report").innerHTML = "";
     document.getElementById("repo-list").innerHTML = "";
 
-    const response = await axios.get(`https://api.github.com/uses/${username}`);
+    const response = await axios.get(`https://api.github.com/users/${username}`);
     githubStatus.textContent = `✓ Found ${response.data.login}`;
     githubStatus.className = "status success";
     const profileCard = document.getElementById("profile-card");

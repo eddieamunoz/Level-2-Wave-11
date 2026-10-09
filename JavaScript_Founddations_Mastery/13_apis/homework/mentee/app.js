@@ -298,7 +298,8 @@ const names = users.map(user => user.name);
 console.log("All users: " + names);
 
 const biz = users.filter(user => user.email.endsWith(".biz"));
-console.log("Number of Names:" + biz.length + " - " + biz);
+const bizNames = biz.map(user => user.name);
+console.log("Number of Names: " + biz.length + " - " + bizNames);
 
 const sam = users.find(user => user.username === "Samantha");
 console.log(sam.address.street + ", " + sam.address.city);
@@ -314,23 +315,23 @@ users.forEach(user => {
 //
 // URL A: https://jsonplaceholder.typicode.com/posts?userId=3
 // How many posts does user 3 have?
-// Answer:
+// Answer: 10 Posts
 //
 // URL B: https://jsonplaceholder.typicode.com/todos?userId=1&completed=true
 // How many completed todos does user 1 have?
-// Answer:
+// Answer: 11 completed
 //
 // URL C: https://jsonplaceholder.typicode.com/todos?userId=1&completed=false
 // How many incomplete todos does user 1 have?
-// Answer:
+// Answer: 9 incomplete
 //
 // URL D: https://jsonplaceholder.typicode.com/posts?_page=3&_limit=4
 // What is the id of the first post on page 3?
 // (Count: page 3 at limit 4 = posts starting at index 8, id 9)
-// Answer:
+// Answer: id 9
 //
 // Write a comment explaining what you'd change in URL D to get page 5:
-// Answer:
+// Answer: change page=3 to page=5
 
 // ----------------------------------------------------------
 // TASK 4 — Build URLs with query params
@@ -348,11 +349,12 @@ users.forEach(user => {
 //     return baseUrl + queryString
 
 function buildApiUrl(baseUrl, params) {
-  if (params = "") {
+  if (params === "") {
     (Object.keys(params).length === 0);
     return baseUrl;
   } else {
-    
+    const queryString = `?${Object.keys(params).map(key => key + "=" + params[key]).join("&")}`;
+    return baseUrl + queryString;
   }
 }
 
@@ -384,7 +386,7 @@ console.log(buildApiUrl("https://jsonplaceholder.typicode.com/posts", {}));
 //
 // Copy the response and paste it below.
 
-const weatherJson = `{}`; // ← replace {} with the real response
+const weatherJson = `{"latitude":40.710335,"longitude":-73.99308,"generationtime_ms":0.3107786178588867,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":27.0,"current_weather_units":{"time":"iso8601","interval":"seconds","temperature":"°C","windspeed":"km/h","winddirection":"°","is_day":"","weathercode":"wmo code"},"current_weather":{"time":"2026-10-08T23:30","interval":900,"temperature":18.6,"windspeed":8.4,"winddirection":292,"is_day":0,"weathercode":0}}`; // ← replace {} with the real response
 
 // Then:
 // a) Parse it: const weather = JSON.parse(weatherJson)
@@ -411,7 +413,27 @@ const weatherJson = `{}`; // ← replace {} with the real response
 //    Log describeWeather(weather.current_weather.weathercode)
 
 // Your code:
+const weather = JSON.parse(weatherJson);
+console.log(weather.current_weather.temperature);
+console.log(weather.current_weather.windspeed);
+console.log(weather.current_weather.weathercode);
 
+function describeWeather() {
+  const weatherCode = weather.current_weather.weathercode;
+
+  if (weatherCode === 0) {
+    return "☀️ Clear sky";
+  } else if (weatherCode <= 3) {
+    return "⛅ Partly cloudy";
+  } else if (weatherCode === 45 || weatherCode === 48) {
+    return "🌫️ Foggy";
+  } else if (weatherCode > 3 && weatherCode < 80 ) {
+    return "🌧️ Rain or drizzle";
+  } else {
+    "⛈️ Stormy";
+  }
+}
+console.log(describeWeather(weather.current_weather.weatherCode));
 // ----------------------------------------------------------
 // TASK 6 — Compare two cities
 // ----------------------------------------------------------
@@ -421,8 +443,8 @@ const weatherJson = `{}`; // ← replace {} with the real response
 //
 // Paste each response below.
 
-const nycWeatherJson = `{}`; // ← NYC response
-const londonWeatherJson = `{}`; // ← London response
+const nycWeatherJson = `{"latitude":40.710335,"longitude":-73.99308,"generationtime_ms":0.3107786178588867,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":27.0,"current_weather_units":{"time":"iso8601","interval":"seconds","temperature":"°C","windspeed":"km/h","winddirection":"°","is_day":"","weathercode":"wmo code"},"current_weather":{"time":"2026-10-08T23:30","interval":900,"temperature":18.6,"windspeed":8.4,"winddirection":292,"is_day":0,"weathercode":0}}`; // ← NYC response
+const londonWeatherJson = `{"latitude":51.51147,"longitude":-0.13078308,"generationtime_ms":360.00001430511475,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":29.0,"current_weather_units":{"time":"iso8601","interval":"seconds","temperature":"°C","windspeed":"km/h","winddirection":"°","is_day":"","weathercode":"wmo code"},"current_weather":{"time":"2026-10-09T00:15","interval":900,"temperature":10.9,"windspeed":16.6,"winddirection":214,"is_day":0,"weathercode":3}}`; // ← London response
 
 // Then:
 // a) Parse both
@@ -431,7 +453,14 @@ const londonWeatherJson = `{}`; // ← London response
 // c) Log which city is warmer:
 //    "The warmer city is: [city name]"
 //    Use a ternary: nycTemp > londonTemp ? "New York" : "London"
+const nycWeather = JSON.parse(nycWeatherJson);
+const londonWeather = JSON.parse(londonWeatherJson);
 
+const nycTemp = nycWeather.current_weather.temperature;
+const londonTemp = londonWeather.current_weather.temperature;
+
+console.log(`NYC: ${nycTemp}°C | London: ${londonTemp}°C`);
+console.log(nycTemp > londonTemp ? "New York": "London");
 // ----------------------------------------------------------
 // TASK 7 — Status code scenario matching
 // ----------------------------------------------------------
@@ -439,22 +468,22 @@ const londonWeatherJson = `{}`; // ← London response
 // AND a brief explanation. Write your answers as comments.
 //
 // Scenario 1: You request /users/9999 but no user has that id.
-// Code + reason:
+// Code + reason: 404 User doesnt exist.
 //
 // Scenario 2: You try to delete a post but you're not logged in.
-// Code + reason:
+// Code + reason: 401 You arent logged in and dont have acccess.
 //
 // Scenario 3: You create a new post successfully.
-// Code + reason:
+// Code + reason: 201 The post was created.
 //
 // Scenario 4: You send a POST request with a required field missing.
-// Code + reason:
+// Code + reason: 400 You're missing something required.
 //
 // Scenario 5: You request /posts and get back a list of 100 posts.
-// Code + reason:
+// Code + reason: 200 The request processed successfully.
 //
 // Scenario 6: The API database server crashes while processing your request.
-// Code + reason:
+// Code + reason: 500 the server crashed on their end.
 
 // ----------------------------------------------------------
 // TASK 8 — Connect the dots: analyse user posts
@@ -562,8 +591,24 @@ const postsMock = [
 // Call analyseUser(userMock, postsMock)
 
 function analyseUser(user, posts) {
-  // your code here
+  console.log("=== " + user.name + " (@" + user.username + ") ===");
+  console.log("📍 " + user.address.city);
+  console.log("🏢 " + user.company.name);
+  console.log("📝 Posts: " + posts.length);
+
+  let shortestPost = posts[0];
+  posts.forEach(post => {
+    if (post.title.length < shortestPost.title.length) {
+      shortestPost = post;
+    }
+  });
+  console.log("Shortest title: " + shortestPost.title);
+
+    posts.forEach(post => {
+    console.log("  • " + post.title);
+  });
 }
+
 
 analyseUser(userMock, postsMock);
 
@@ -595,7 +640,19 @@ analyseUser(userMock, postsMock);
 // → { base: "https://jsonplaceholder.typicode.com/users", params: {} }
 
 function parseUrl(url) {
-  // your code here
+  if (!url.includes("?")) {
+    return { base: url, params: {} };
+  }
+
+  const [base, queryString] = url.split("?");
+  const params = {};
+
+  queryString.split("&").forEach(pair => {
+    const [key, value] = pair.split("=");
+    params[key] = value;
+  });
+
+  return { base: base, params: params };
 }
 
 console.log(

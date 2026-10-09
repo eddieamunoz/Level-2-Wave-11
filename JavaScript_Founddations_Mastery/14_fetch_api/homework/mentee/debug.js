@@ -11,21 +11,30 @@ const WEATHER_API = "https://api.open-meteo.com/v1/forecast";
 // This should fetch weather data and log the temperature.
 // Instead it logs undefined. What's wrong?
 
+// fetch(WEATHER_API + "?latitude=51.51&longitude=-0.13&current_weather=true")
+//   .then(function(response) {
+//     return response.json();
+//   })
+//   .then(function(data) {
+//     console.log("Temperature: " + data.temperature); // undefined
+//   })
+//   .catch(function(err) {
+//     console.error(err.message);
+//   });
+
+// What's wrong ↓
+
+// Your fix ↓
 fetch(WEATHER_API + "?latitude=51.51&longitude=-0.13&current_weather=true")
   .then(function(response) {
     return response.json();
   })
   .then(function(data) {
-    console.log("Temperature: " + data.temperature); // undefined
+    console.log("Temperature: " + data.current_weather.temperature);
   })
   .catch(function(err) {
     console.error(err.message);
   });
-
-// What's wrong ↓
-
-// Your fix ↓
-
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -33,13 +42,30 @@ fetch(WEATHER_API + "?latitude=51.51&longitude=-0.13&current_weather=true")
 // This fetch chain should log the city name and temperature.
 // The second .then crashes. What's wrong?
 
+// fetch(WEATHER_API + "?latitude=40.71&longitude=-74.01&current_weather=true")
+//   .then(function(response) {
+//     if (!response.ok) {
+//       throw new Error("HTTP " + response.status);
+//     }
+//     // missing return
+//     response.json();
+//   })
+//   .then(function(data) {
+//     console.log("Temp: " + data.current_weather.temperature);
+//   })
+//   .catch(function(err) {
+//     console.error("Error:", err.message);
+//   });
+
+// What's wrong ↓
+// There is no return so it will return undefined in the the next .then
+// Your fix ↓
 fetch(WEATHER_API + "?latitude=40.71&longitude=-74.01&current_weather=true")
   .then(function(response) {
     if (!response.ok) {
       throw new Error("HTTP " + response.status);
     }
-    // missing return
-    response.json();
+    return response.json();
   })
   .then(function(data) {
     console.log("Temp: " + data.current_weather.temperature);
@@ -47,11 +73,6 @@ fetch(WEATHER_API + "?latitude=40.71&longitude=-74.01&current_weather=true")
   .catch(function(err) {
     console.error("Error:", err.message);
   });
-
-// What's wrong ↓
-
-// Your fix ↓
-
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -84,7 +105,30 @@ fetchCity("london");  // works (kinda)
 fetchCity("tokyo");   // Bug 2: crashes before even fetching
 
 // Bug 1 ↓
-
+// The temperature is inside current_weather, need accees from there.
 // Bug 2 ↓
-
+// No check to see if Tokyo exists in cities.
 // Your fix ↓
+function fetchCity(cityKey) {
+  const city = CITIES[cityKey];
+
+  if (!city) {
+    console.error("City not found: " + cityKey);
+    return;
+  }
+
+  fetch(WEATHER_API + "?latitude=" + city.lat + "&longitude=" + city.lon + "&current_weather=true")
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      const temp = data.current_weather.temperature;
+      console.log(city.name + ": " + temp + "°C");
+    })
+    .catch(function(err) {
+      console.error(err.message);
+    });
+}
+
+fetchCity("london");
+fetchCity("tokyo");
