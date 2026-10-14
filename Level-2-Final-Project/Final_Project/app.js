@@ -19,6 +19,8 @@ async function generateCodeChallenge(codeVerifier) {
     .replace(/\//g, "_");
 }
 
+const redirectUri = window.location.origin + "/callback.html"
+
 async function handleLogin() {
     const verifier = generateCodeVerifier(64);
     localStorage.setItem("code-verifier", verifier);
@@ -26,7 +28,7 @@ async function handleLogin() {
 
     const url = "https://accounts.spotify.com/authorize" +
   "?client_id=" + "de8f112a225c42a38af653787a649cb3" +
-  "&redirect_uri=" + encodeURIComponent("http://127.0.0.1:5500/callback.html") +
+  "&redirect_uri=" + encodeURIComponent("https://spotistatss.netlify.app/callback.html") +
   "&response_type=code" +
   "&scope=" + encodeURIComponent("user-read-private user-read-email user-top-read") +
   "&code_challenge_method=S256" +
@@ -71,7 +73,7 @@ async function handleCallback() {
     const newParams = new URLSearchParams({
       grant_type: "authorization_code",
       code,
-      redirect_uri: "http://127.0.0.1:5500/callback.html",
+      redirect_uri: "https://spotistatss.netlify.app/callback.html",
       client_id: "de8f112a225c42a38af653787a649cb3",
       code_verifier: verifier
     });
