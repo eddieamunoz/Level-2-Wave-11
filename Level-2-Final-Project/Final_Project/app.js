@@ -273,6 +273,10 @@ function showSection(sectionId) {
   })
   const rmvHidden = document.getElementById(sectionId);
     rmvHidden.classList.remove("hidden");
+  
+    document.querySelectorAll(".nav-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.section === sectionId);
+  });
 }
 
 

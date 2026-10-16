@@ -4,20 +4,28 @@
   --bg: #121212;       
   --card: #1e1e1e;     
   --text: #ffffff;
-  --accent: #1db954;   
+  --accent: #1db954;
+  --muted: #b3b3b3;
+  --border: #2a2a2a;   
 }
+
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   background: var(--bg);  
   color: var(--text);   
-  font-family: Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   max-width: 800px;     
   margin: 0 auto;   
-  padding: 16px;   
+  padding: 16px;
+  line-height: 1.5;   
 }
 
-h1, h2 { color: var(--accent); }
+h1, h2 { 
+  color: var(--accent);
+}
 
+h1 { font-size: 2rem; margin-bottom: 8px; }
 nav {
   display: flex;  
   flex-wrap: wrap; 
@@ -40,6 +48,11 @@ nav {
   color: #000000;
 }
 
+.nav-btn.active {
+  background: var(--accent);
+  color: #000000;
+}
+
 ul {
   list-style: none;     
   padding: 0;           
@@ -53,11 +66,18 @@ li::marker {
     color: var(--accent);
 }
 
-.card {              
+.card {
   background: var(--card);
+  border: 1px solid var(--border);
   padding: 12px 16px;
   margin-bottom: 8px;
-  border-radius: 8px;   
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  background: #2a2a2a;
+  transform: translateY(-2px);
 }
 
 .card-img {
@@ -74,6 +94,7 @@ li::marker {
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
+  border: 3px solid var(--accent);
 }
 
 form label {
@@ -114,6 +135,31 @@ form button {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
+}
+
+#login-btn:hover,
+form button:hover {
+  filter: brightness(1.1);
+  transform: scale(1.04);
+}
+
+.nav-btn,
+#login-btn,
+form button {
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.nav-btn:focus-visible,
+#login-btn:focus-visible,
+form button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+#imgUrl {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 /*Media Query for Phone/Tablet*/
